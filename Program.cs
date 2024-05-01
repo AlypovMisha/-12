@@ -1,4 +1,4 @@
-﻿using LibraryForLabs;
+using LibraryForLabs;
 using System;
 
 namespace Лабораторная_12
@@ -9,6 +9,7 @@ namespace Лабораторная_12
         {
             string choice = null;
             DoublyLinkedList<Cars> list = null;
+            
             PrintMenu();
 
             while (choice != "7")
@@ -18,24 +19,36 @@ namespace Лабораторная_12
                 switch (choice)
                 {
                     case "1":
-                        list = new DoublyLinkedList<Cars>(5);
-                        Console.WriteLine("Список сформирован");
-                        break;
-                    case "2":
                         try
                         {
-                            list.AddToOddIndex();
-                            Console.WriteLine("Элементы добавлены");
+                            Console.Write("Введите длину списка: ");
+                            int length = int.Parse(Console.ReadLine());
+                            list = new DoublyLinkedList<Cars>(length);
+                            Console.WriteLine("Список сформирован");
                         }
                         catch
                         {
-                            Console.WriteLine("Сначала сформируйте список.");
+                            Console.WriteLine("Вы неправильно ввели длину списка.");
                         }
+                        break;
+                    case "2":
+                        if (list != null)
+                        {
+                            list.AddOddItems();
+                            Console.WriteLine("Элементы добавлены");
+                        }
+                        else
+                            Console.WriteLine("Сначала сформируйте список.");
                         break;
                     case "3":
                         try
                         {
-                            list.RemoveAfterFound(new Cars("Nissan", 2023, "Black", 777777, 25));
+                            Cars carForDelete = new Cars();
+                            carForDelete.Init();
+                            if (list != null && list.DeleteAfterFound(carForDelete))
+                                Console.WriteLine("Элементы удалены!");
+                            else
+                                Console.WriteLine("\nЭлемент с таким полем не найден!\n");
                         }
                         catch
                         {
@@ -82,30 +95,6 @@ namespace Лабораторная_12
                         break;
                 }
             }
-
-            //Console.WriteLine("\n\t\t|||Изначальный список|||\n");
-            //DoublyLinkedList<Cars> list = new DoublyLinkedList<Cars>(5);
-            //list.PrintList();
-            //Console.WriteLine("\n\t\t|||После добавления|||\n");
-            //list.AddToOddIndex();
-            //list.PrintList();
-            //Console.WriteLine("\n\t\t|||После удаления элементов|||\n");
-            //Cars car = new Cars("Nissan", 2023, "Black", 777777, 25);
-            //list.RemoveAfterFound(car);
-            //list.PrintList();
-
-            //Console.WriteLine("\n\t\t|||Оригинал и копия списка|||\n");
-            //Клонирование глубокое
-            //DoublyLinkedList<Cars> listOriginal = new DoublyLinkedList<Cars>(4);
-            //listOriginal.PrintList();
-            //Console.WriteLine();
-            //DoublyLinkedList<Cars> listCopy = listOriginal.MakeDeepCopy(listOriginal);
-            //listCopy.PrintList();
-            //Console.WriteLine();
-            ////Удаление
-            //Console.WriteLine("\n\t\t|||Удаление списка из памяти|||\n");
-            //list.DeleteList();
-            //list.PrintList();
         }
 
         public static void PrintMenu()
