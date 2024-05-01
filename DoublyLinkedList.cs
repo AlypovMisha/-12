@@ -1,4 +1,4 @@
-﻿using LibraryForLabs;
+using LibraryForLabs;
 using System;
 
 namespace Лабораторная_12
@@ -21,16 +21,24 @@ namespace Лабораторная_12
 
         public DoublyLinkedList(int size)
         {
-            if (size <= 0)
-                throw new ArgumentOutOfRangeException("Size is not less than 1");
-
-            beginning = node.MakeRandomData();
-            count++;
-            end = beginning;
-            for (int i = 1; i < size; i++)
+            if (size < 0)
+                throw new ArgumentOutOfRangeException("Size is not less than 0");
+            if (size == 0)
             {
-                T newItem = node.MakeRandomItem();
-                AddToEnd(newItem);
+                beginning = null;
+                end = null;
+                count = 0;
+            }
+            else
+            {
+                beginning = node.MakeRandomData();
+                count++;
+                end = beginning;
+                for (int i = 1; i < size; i++)
+                {
+                    T newItem = node.MakeRandomItem();
+                    AddToEnd(newItem);
+                }
             }
         }
 
@@ -40,10 +48,11 @@ namespace Лабораторная_12
                 throw new ArgumentNullException("Empty collection: null");
             if (collection.Length == 0)
                 throw new ArgumentException("Empty collection");
-            T newData = (T)collection.Clone();
+            T newData = (T)collection[0].Clone();
+            count++;
             beginning = new Node<T>(newData);
             end = beginning;
-            for (int i = 0; i < collection.Length; i++)
+            for (int i = 1; i < collection.Length; i++)
             {
                 AddToEnd(collection[i]);
             }
@@ -96,76 +105,122 @@ namespace Лабораторная_12
             Node<T> current = beginning;
             for (int i = 0; current != null; i++)
             {
-                Console.WriteLine($"{i}. {current}");
+                Console.WriteLine($"{i+1}. {current}");
                 current = current.Next;
             }
         }
-
+       
         //Добавить элементы на нечетные индексы
-        public void AddToOddIndex()
+        public void AddOddItems()
         {
-            if (count <= 1)
-                throw new Exception("There are no elements with odd indexes in the array");
-            Node<T> current = beginning;
-            for (int i = 0; current != null; i++)
+            if (count > 1)
             {
-                if (i % 2 != 0 && current.Next != null)
+                Node<T> current = beginning;
+                Node<T> temp;
+                while (current != null)
                 {
-                    Cars car = new Cars("Nissan", 2023, "Black", 777777, 25);
+                    temp = current;
+                    Cars car = new Cars();
+                    car.RandomInit();
                     T newData = (T)car.Clone();
                     Node<T> newNode = new Node<T>(newData);
-                    newNode.Prev = current.Prev;
-                    newNode.Next = current;
-                    current.Prev.Next = newNode;
-                    current.Next.Prev = current;
-                    count++;
+                    car.RandomInit();
+                    newData = (T)car.Clone();
+                    Node<T> forEnd = new Node<T>(newData);
+                    if (current.Prev == null)
+                    {
+                        newNode.Prev = current.Prev;
+                        newNode.Next = current;
+                        current.Prev = newNode;
+                        current = current.Next;
+                        beginning = newNode;
+                        count++;
+                    }
+                    else if (current.Next == null)
+                    {
+                        newNode.Prev = current.Prev;
+                        newNode.Next = current;
+                        current.Prev.Next = newNode;
+                        end = forEnd;
+                        end.Prev = current;
+                        end.Prev.Next = forEnd;
+                        count++;
+                        break;
+                    }
+                    else
+                    {
+                        newNode.Prev = current.Prev;
+                        newNode.Next = current;
+                        current.Prev.Next = newNode;
+                        current.Next.Prev = current;
+                        current = current.Next;
+                        count++;
+                    }
                 }
-                else if (i % 2 != 0 && current.Next == null)
-                {
-                    Cars car = new Cars("Nissan", 2023, "Black", 777777, 25);
-                    T newData = (T)car.Clone();
-                    Node<T> newNode = new Node<T>(newData);
-                    newNode.Next = current;
-                    newNode.Prev = current.Prev;
-                    current.Prev.Next = newNode;
-                    current.Prev = newNode;
-                }
-                else
-                    current = current.Next;
+            }
+            else if (count == 1)
+            {
+                Node<T> current = beginning;
+                Cars car = new Cars();
+                car.RandomInit();
+                T newData = (T)car.Clone();
+                Node<T> newNode = new Node<T>(newData);
+                car.RandomInit();
+                newData = (T)car.Clone();
+                Node<T> forEnd = new Node<T>(newData);
+                beginning = newNode;
+                beginning.Next = current;
+                current.Prev = beginning;                
+                end = forEnd;
+                current.Next = end;
+                count+=2;
+            }
+            else if (count == 0)
+            {
+                Cars car = new Cars();
+                car.RandomInit();
+                T newData = (T)car.Clone();
+                Node<T> newNode = new Node<T>(newData);
+                beginning = newNode;
+                end = newNode;
+                count++;
             }
         }
 
-        public void RemoveAfterFound(T item)
+        public bool DeleteAfterFound(T item)
         {
-            Node<T> current = beginning;
+            if (count < 1 || FindItem(item) == null)
+                return false;
+            Node<T> current = beginning;            
             Node<T> itemForFind = new Node<T>(FindItem(item).Data);
+            int c = 0;
             while (current != null)
             {
-                if (count <= 1 && current.Data.Equals(itemForFind.Data))
+                if (current.Prev == null && current.Data.Equals(itemForFind.Data))
                 {
                     beginning = null;
                     end = null;
                     count = 0;
-                    break;
-                }
-                if (current.Prev == null && current.Data.Equals(itemForFind.Data))
-                {
-                    current.Next.Prev = null;
-                    beginning = current.Next;
-                    count--;
+                    return true;
                 }
                 else if (current.Next == null && current.Data.Equals(itemForFind.Data))
                 {
+                    end = current.Prev;
                     current.Prev.Next = null;
                     count--;
+                    return true;
                 }
                 else if (current.Data.Equals(itemForFind.Data))
                 {
-                    current.Prev.Next = current.Next;
-                    current.Next.Prev = current.Prev;
+                    end = current.Prev;
+                    current.Prev.Next = null;                    
+                    count = c;
+                    return true;
                 }
+                c++;
                 current = current.Next;
             }
+            return false;
         }
 
         public Node<T> FindItem(T item)
@@ -237,13 +292,19 @@ namespace Лабораторная_12
         //Удаление из памяти        
         public void DeleteList()
         {
-            Node<T> current = end;
-            while (current.Prev != null)
+            Node<T> current = beginning;
+            Node<T> temp;
+            while (current != null)
             {
-                current = current.Prev;
+                temp = current.Next;
+                current.Data = default(T); 
                 current.Next = null;
+                current.Prev = null;
+                current = temp;
             }
-            beginning = end = null;
+
+            beginning = null;
+            end = null;
             count = 0;
         }
 
