@@ -274,13 +274,13 @@ namespace Лабораторная_12
 
 
         //Сделать глубокую копию списка
-        public DoublyLinkedList<T> MakeDeepCopy(DoublyLinkedList<T> listForCopy)
+        public DoublyLinkedList<T> MakeDeepCopy()
         {
             DoublyLinkedList<T> newList = new DoublyLinkedList<T>();
-            Node<T> currentForCopy = listForCopy.beginning;
-            if (listForCopy.Count > 0)
+            Node<T> currentForCopy = beginning;
+            if (Count > 0)
             {
-                for (int i = 0; i < listForCopy.Count; i++)
+                for (int i = 0; i < Count; i++)
                 {
                     newList.AddToEnd(currentForCopy.Data);
                     currentForCopy = currentForCopy.Next;
