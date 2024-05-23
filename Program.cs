@@ -288,9 +288,16 @@ namespace Лабораторная_12
                         }
                         break;
                     case "5":
+                        if(hashTable != null)
+                        {
                         hashTable.DeleteHashTable();
                         hashTable = null;
                         Console.WriteLine("Хеш-таблица удалена");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Сначала сформируйте хеш-таблицу.");
+                        }
                         break;
                     case "6":
                         if (hashTable != null)
