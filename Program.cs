@@ -7,19 +7,11 @@ namespace Лабораторная_12
     {
         static void Main(string[] args)
         {
-            //var hashTable = new SuperHashTable<Cars>(10);
-            //var car1 = new Cars();
-            //car1.RandomInit();
-            //var car2 = new Cars();
-            //car2.RandomInit();
-            //hashTable.Add(car1);
-            //hashTable.Add(car2);
-            //var array = new Cars[hashTable.Count];
+            
 
-            //// Act
-            //hashTable.CopyTo(array, 0);
 
-            //Console.WriteLine($"{array[0]}");
+
+
             //Console.ReadLine();
             PrintMenu();
             ChoiceDataStructure();
@@ -93,12 +85,6 @@ namespace Лабораторная_12
         {
             string choice = null;
             DoublyLinkedList<Cars> list = null;
-<<<<<<< HEAD
-=======
-            
-            PrintMenu();
-
->>>>>>> 172b156e59075611a759f4241d32551b3d2869e8
             while (choice != "7")
             {
                 Console.Write("Ваш выбор: ");
@@ -107,7 +93,6 @@ namespace Лабораторная_12
                 {
                     case "1":
                         try
-<<<<<<< HEAD
                         {
                             Console.Write("Введите длину списка: ");
                             int length = int.Parse(Console.ReadLine());
@@ -118,27 +103,6 @@ namespace Лабораторная_12
                         {
                             Console.WriteLine("Вы неправильно ввели длину списка.");
                         }
-                        break;
-                    case "2":
-                        if (list != null)
-                        {
-                            list.AddOddItems();
-                            Console.WriteLine("Элементы добавлены");
-                        }
-                        else
-                            Console.WriteLine("Сначала сформируйте список.");
-=======
-                        {
-                            Console.Write("Введите длину списка: ");
-                            int length = int.Parse(Console.ReadLine());
-                            list = new DoublyLinkedList<Cars>(length);
-                            Console.WriteLine("Список сформирован");
-                        }
-                        catch
-                        {
-                            Console.WriteLine("Вы неправильно ввели длину списка.");
-                        }
->>>>>>> 172b156e59075611a759f4241d32551b3d2869e8
                         break;
                     case "2":
                         if (list != null)
@@ -226,7 +190,7 @@ namespace Лабораторная_12
                             int length = int.Parse(Console.ReadLine());
                             hashTable = new HashTable<Cars>(length);
                             Console.Write("Введите элементов, которых хотите создать: ");
-                            int countOfElements = int.Parse(Console.ReadLine());
+                            int countOfElements = int.Parse(Console.ReadLine());                    
                             for (int i = 0; i < countOfElements; i++)
                             {
                                 Cars car = new Cars();
@@ -288,11 +252,11 @@ namespace Лабораторная_12
                         }
                         break;
                     case "5":
-                        if(hashTable != null)
+                        if (hashTable != null)
                         {
-                        hashTable.DeleteHashTable();
-                        hashTable = null;
-                        Console.WriteLine("Хеш-таблица удалена");
+                            hashTable.DeleteHashTable();
+                            hashTable = null;
+                            Console.WriteLine("Хеш-таблица удалена");
                         }
                         else
                         {
